@@ -1,0 +1,136 @@
+package com.bufete.backend.controller;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bufete.backend.Dtos.ApiResponse;
+import com.bufete.backend.Dtos.ChangePasswordRequest;
+import com.bufete.backend.Dtos.PageResponse;
+import com.bufete.backend.Dtos.usuario.CreateUsuarioRequest;
+import com.bufete.backend.Dtos.usuario.EditUsuarioDTO;
+import com.bufete.backend.Dtos.usuario.UpdateUsuarioRequest;
+import com.bufete.backend.Dtos.usuario.UsuarioDTO;
+import com.bufete.backend.model.Usuario;
+import com.bufete.backend.service.UsuarioService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequestMapping("/api/usuarios")
+@PreAuthorize("hasAuthority('VIEW_USERS')")
+@Tag(name = "Usuarios", description = "Gestión de usuarios del sistema")
+@Slf4j
+public class UsuarioController {
+    
+    private final UsuarioService usuarioService;
+    
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+    
+    /* @GetMapping
+    @Operation(summary = "Listar usuarios", description = "Obtiene una lista paginada de usuarios con filtros opcionales")
+    public ResponseEntity<ApiResponse<PageResponse<UsuarioDTO>>> getAllUsuarios(
+            @RequestParam(defaultValue = "0") @Min(0) int page,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String apellido,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) Boolean activo) {
+        
+        PageResponse<UsuarioDTO> usuarios = usuarioService.getAllUsuarios(
+                page, size, sortBy, sortDir, nombre, apellido, email, activo);
+        
+        return ResponseEntity.ok(ApiResponse.success(usuarios, "Usuarios obtenidos exitosamente"));
+    } */
+
+    @GetMapping
+    @Operation(summary = "Listar usuarios", description = "Obtiene una lista paginada de usuarios con filtros opcionales")
+    public ResponseEntity<ApiResponse<List<UsuarioDTO>>> getAllUsuarios() {
+
+        List<UsuarioDTO> usuarios = usuarioService.allUsuarios();
+        System.out.println("Consultando usuarios");
+        return ResponseEntity.ok(ApiResponse.success(usuarios, "Usuarios obtenidos exitosamente"));
+    }
+
+    
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtener usuario por ID", description = "Obtiene los detalles de un usuario específico")
+    public ResponseEntity<ApiResponse<EditUsuarioDTO>> getUsuarioById(
+            @PathVariable @Positive Long id) {
+        
+        EditUsuarioDTO usuario = usuarioService.getUsuarioById(id);
+        return ResponseEntity.ok(ApiResponse.success(usuario, "Usuario obtenido exitosamente"));
+    }
+    
+    @PostMapping
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    @Operation(summary = "Crear usuario", description = "Crea un nuevo usuario en el sistema")
+    public ResponseEntity<ApiResponse<UsuarioDTO>> createUsuario(
+            @Valid @RequestBody CreateUsuarioRequest request) {
+        
+        UsuarioDTO usuario = usuarioService.createUsuario(request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success(usuario, "Usuario creado exitosamente"));
+    }
+    
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    @Operation(summary = "Actualizar usuario", description = "Actualiza los datos de un usuario existente")
+    public ResponseEntity<ApiResponse<UsuarioDTO>> updateUsuario(
+            @PathVariable @Positive Long id,
+            @Valid @RequestBody UpdateUsuarioRequest request) {
+        
+        UsuarioDTO usuario = usuarioService.updateUsuario(id, request);
+        return ResponseEntity.ok(ApiResponse.success(usuario, "Usuario actualizado exitosamente"));
+    }
+    
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('MANAGE_USERS')")
+    @Operation(summary = "Eliminar usuario", description = "Desactiva un usuario del sistema")
+    public ResponseEntity<ApiResponse<Void>> deleteUsuario(
+            @PathVariable @Positive Long id) {
+        
+        usuarioService.deleteUsuario(id);
+        return ResponseEntity.ok(ApiResponse.success(null, "Usuario eliminado exitosamente"));
+    }
+    
+    @GetMapping("/abogados")
+    @Operation(summary = "Obtener abogados activos", description = "Obtiene la lista de todos los abogados activos")
+    public ResponseEntity<ApiResponse<List<UsuarioDTO>>> getAbogados() {
+        List<UsuarioDTO> abogados = usuarioService.getAbogados();
+        return ResponseEntity.ok(ApiResponse.success(abogados, "Abogados obtenidos exitosamente"));
+    }
+    
+    @PutMapping("/{id}/change-password")
+    @Operation(summary = "Cambiar contraseña", description = "Cambia la contraseña de un usuario")
+    public ResponseEntity<ApiResponse<UsuarioDTO>> changePassword(
+            @PathVariable @Positive Long id,
+            @Valid @RequestBody ChangePasswordRequest request) {
+
+        UsuarioDTO usuario = usuarioService.changePassword(id, request.getOldPassword(), request.getNewPassword());
+        return ResponseEntity.ok(ApiResponse.success(usuario, "Contraseña cambiada exitosamente"));
+    }
+    
+    
+}
