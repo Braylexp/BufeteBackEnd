@@ -20,7 +20,6 @@ import com.bufete.backend.Dtos.PageResponse;
 import com.bufete.backend.Dtos.proceso.CreateProcesoRequest;
 import com.bufete.backend.Dtos.proceso.ProcesoDTO;
 import com.bufete.backend.Dtos.proceso.UpdateEstadoProcesoRequest;
-import com.bufete.backend.config.jwt.JwtTokenProvider;
 import com.bufete.backend.model.Proceso;
 import com.bufete.backend.model.Usuario;
 import com.bufete.backend.repository.UsuarioRepository;
@@ -37,7 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/procesos")
-@PreAuthorize("hasAuthority('VIEW_PROCESO')")
 @Tag(name = "Procesos", description = "Gestión de procesos legales")
 @Slf4j
 public class ProcesoController {

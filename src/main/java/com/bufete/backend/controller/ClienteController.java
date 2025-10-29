@@ -33,7 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/clientes")
-@PreAuthorize("hasAuthority('VIEW_CLIENTE')")
 /* @Tag(name = "Clientes", description = "Gestión de clientes") */
 @Slf4j
 public class ClienteController {

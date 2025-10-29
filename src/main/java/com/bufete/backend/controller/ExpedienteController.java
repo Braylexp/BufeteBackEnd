@@ -37,7 +37,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/expedientes")
-@PreAuthorize("hasAuthority('VIEW_EXPEDIENTE')")
 @Tag(name = "Expedientes", description = "Gestión de expedientes")
 @Slf4j
 public class ExpedienteController {

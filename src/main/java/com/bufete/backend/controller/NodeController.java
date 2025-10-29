@@ -38,7 +38,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/nodes")
-@PreAuthorize("hasAuthority('VIEW_EXPEDIENTE')")
 @Tag(name = "Gestión de Archivos", description = "Sistema de archivos jerárquico")
 @Slf4j
 public class NodeController {

@@ -35,7 +35,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/usuarios")
-@PreAuthorize("hasAuthority('VIEW_USERS')")
 @Tag(name = "Usuarios", description = "Gestión de usuarios del sistema")
 @Slf4j
 public class UsuarioController {
@@ -45,24 +44,6 @@ public class UsuarioController {
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
-    
-    /* @GetMapping
-    @Operation(summary = "Listar usuarios", description = "Obtiene una lista paginada de usuarios con filtros opcionales")
-    public ResponseEntity<ApiResponse<PageResponse<UsuarioDTO>>> getAllUsuarios(
-            @RequestParam(defaultValue = "0") @Min(0) int page,
-            @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir,
-            @RequestParam(required = false) String nombre,
-            @RequestParam(required = false) String apellido,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) Boolean activo) {
-        
-        PageResponse<UsuarioDTO> usuarios = usuarioService.getAllUsuarios(
-                page, size, sortBy, sortDir, nombre, apellido, email, activo);
-        
-        return ResponseEntity.ok(ApiResponse.success(usuarios, "Usuarios obtenidos exitosamente"));
-    } */
 
     @GetMapping
     @Operation(summary = "Listar usuarios", description = "Obtiene una lista paginada de usuarios con filtros opcionales")
