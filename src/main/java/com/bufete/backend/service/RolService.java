@@ -15,10 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bufete.backend.Dtos.rol.InfoRolDTO;
 import com.bufete.backend.Dtos.rol.RolConPermisoDTO;
 import com.bufete.backend.Dtos.rol.RolDTO;
+import com.bufete.backend.Dtos.rol.RolUpdateDTO;
 import com.bufete.backend.model.Permiso;
 import com.bufete.backend.model.Rol;
 import com.bufete.backend.repository.PermisoRepository;
 import com.bufete.backend.repository.RolRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class RolService {
@@ -45,18 +48,25 @@ public class RolService {
     }
 
     @Transactional
-    public Rol actualizarPermisosRol(Long rol_Id, Set<String> permisos) {
+    public InfoRolDTO actualizarPermisosRol(Long rol_Id, Set<String> permisos) {
         Rol role = rolRepository.findById(rol_Id)
-                .orElseGet(() -> {
-                    Rol rol = new Rol();
-                    rol.setNombre("ROLE_" + rol_Id);
-                    return rol;
-                });
-        Set<Permiso> perms = permisos.stream()
-                .map(this::buscarOCrearPermisos)
-                .collect(Collectors.toSet());
+                .orElseThrow(() -> new EntityNotFoundException("Rol no encontrado: "+rol_Id));
+        Set<Permiso> perms = new HashSet<>();
+        
+        for (String permiso : permisos) {
+            Permiso perm = permisoRepository.findByNombre(permiso)
+                .orElseThrow(() -> new EntityNotFoundException("Permiso no encontrado : "+permiso));
+            perms.add(perm);
+        }
         role.setPermisos(perms);
-        return rolRepository.save(role);
+        Rol updated = rolRepository.save(role);
+        InfoRolDTO rolAux = new InfoRolDTO();
+        
+        rolAux.setId(updated.getId());
+        rolAux.setNombre(updated.getNombre());
+
+        rolAux.setPermisos(null);
+        return rolAux;
     }
 
     @Transactional(readOnly = true)

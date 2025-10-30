@@ -33,12 +33,7 @@ public class Permiso {
     @CreationTimestamp
     private Instant createdAt;
     
-    @ManyToMany
-    @JoinTable(
-        name = "rol_permiso",
-        joinColumns = @JoinColumn(name = "permiso_id"),
-        inverseJoinColumns = @JoinColumn(name = "rol_id")
-    )
+    @ManyToMany(mappedBy = "permisos")
     @Builder.Default
     private Set<Rol> roles = new HashSet<>();
 

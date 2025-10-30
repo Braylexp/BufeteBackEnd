@@ -59,7 +59,8 @@ public class UsuarioController {
     @GetMapping("/{id}")
     @Operation(summary = "Obtener usuario por ID", description = "Obtiene los detalles de un usuario específico")
     public ResponseEntity<ApiResponse<EditUsuarioDTO>> getUsuarioById(
-            @PathVariable @Positive Long id) {
+            @PathVariable @Positive Long id,
+            Authentication authentication) {
         
         EditUsuarioDTO usuario = usuarioService.getUsuarioById(id);
         return ResponseEntity.ok(ApiResponse.success(usuario, "Usuario obtenido exitosamente"));
@@ -69,9 +70,11 @@ public class UsuarioController {
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     @Operation(summary = "Crear usuario", description = "Crea un nuevo usuario en el sistema")
     public ResponseEntity<ApiResponse<UsuarioDTO>> createUsuario(
-            @Valid @RequestBody CreateUsuarioRequest request) {
+            @Valid @RequestBody CreateUsuarioRequest request,
+            Authentication authentication) {
         
         UsuarioDTO usuario = usuarioService.createUsuario(request);
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.success(usuario, "Usuario creado exitosamente"));
     }
@@ -91,7 +94,8 @@ public class UsuarioController {
     @PreAuthorize("hasAuthority('MANAGE_USERS')")
     @Operation(summary = "Eliminar usuario", description = "Desactiva un usuario del sistema")
     public ResponseEntity<ApiResponse<Void>> deleteUsuario(
-            @PathVariable @Positive Long id) {
+            @PathVariable @Positive Long id,
+            Authentication authentication) {
         
         usuarioService.deleteUsuario(id);
         return ResponseEntity.ok(ApiResponse.success(null, "Usuario eliminado exitosamente"));

@@ -39,10 +39,10 @@ public class RolController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Rol> updatePermissions(@PathVariable Long id, @RequestBody RolUpdateDTO request) {
-        Rol updated = rolService.actualizarPermisosRol(id, request.permisos());
-        return ResponseEntity.ok(updated);
+    @PostMapping("/{id}")
+    public ResponseEntity<InfoRolDTO> updatePermissions(@PathVariable Long id, @RequestBody RolUpdateDTO request) {
+        InfoRolDTO updated = rolService.actualizarPermisosRol(id, request.getPermisos());
+        return ResponseEntity.ok(updated);        
     }
 
     @GetMapping

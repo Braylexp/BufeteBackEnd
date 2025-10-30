@@ -528,13 +528,12 @@ public class NodeService {
 
     private boolean existFileForName(List<UUID> listaDocsPorModulo, String name) {
         boolean exist = false;
-        System.out.println("cantidad blobs : " + listaDocsPorModulo.size());
+    
         for (UUID uuid : listaDocsPorModulo) {
             FileBlob blobAux = fileBlobRepository.findById(uuid)
                     .orElseThrow(() -> new EntityNotFoundException("File Blob no encontrado"));
 
             if (blobAux.getOriginalName().equals(name)) {
-                System.out.println("Encontrado");
                 exist = true;
                 return true;
             }

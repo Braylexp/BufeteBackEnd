@@ -35,7 +35,12 @@ public class Rol {
     @UpdateTimestamp
     private Instant updatedAt;
     
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany
+    @JoinTable(
+        name = "rol_permiso",
+        joinColumns = @JoinColumn(name = "rol_id"),
+        inverseJoinColumns = @JoinColumn(name = "permiso_id")
+    )
     @Builder.Default
     private Set<Permiso> permisos = new HashSet<>();
     
