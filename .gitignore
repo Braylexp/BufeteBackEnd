@@ -5,7 +5,7 @@ HELP.md
 !**/src/test/**/target/
 
 #properties
-src/main/resources/application.yml
+src/main/resources/
 
 
 ### STS ###
@@ -35,4 +35,4 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources/application.yml
+src/main/resources/
