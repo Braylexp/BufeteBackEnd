@@ -6,9 +6,9 @@ spring:
     name: backend-bufete
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/bufete3
-    username: postgres
-    password: admin
+    url: jdbc:postgresql://ep-curly-wave-ady17a0d-pooler.c-2.us-east-1.aws.neon.tech/neondb?user=neondb_owner&password=npg_UPSVbM5tA2lL&sslmode=require&channelBinding=require
+    username: neondb_owner
+    password: npg_UPSVbM5tA2lL
     driver-class-name: org.postgresql.Driver
 
   jpa:
