@@ -47,26 +47,6 @@ public class EventoController {
         this.eventoService = eventoService;
         this.usuarioRepository = usuarioRepository;
     }
-    
-   /*  @GetMapping
-    @Operation(summary = "Listar eventos", description = "Obtiene una lista paginada de eventos")
-    public ResponseEntity<ApiResponse<PageResponse<EventoDTO>>> getAllEventos(
-            @RequestParam(defaultValue = "0") @Min(0) int page,
-            @RequestParam(defaultValue = "10") @Min(1) @Max(100) int size,
-            @RequestParam(defaultValue = "fechaInicio") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir,
-            @RequestParam(required = false) String titulo,
-            @RequestParam(required = false) Long tipoEventoId,
-            @RequestParam(required = false) Long responsableId,
-            @RequestParam(required = false) Long procesoId) {
-        
-        PageResponse<EventoDTO> eventos = eventoService.getAllEventos(
-                page, size, sortBy, sortDir, titulo, tipoEventoId, responsableId, 
-                procesoId);
-        
-        return ResponseEntity.ok(ApiResponse.success(eventos, 
-            "Eventos obtenidos exitosamente"));
-    } */
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener evento por ID")
@@ -90,6 +70,8 @@ public class EventoController {
     public ResponseEntity<ApiResponse<EventoDTO>> createEvento(
             @Valid @RequestBody CreateEventoRequest request,
             Authentication authentication) {
+
+                System.out.println("evento"+request.getProcesoId());
 
         Long createdById = getUserIdFromAuthentication(authentication);
 
