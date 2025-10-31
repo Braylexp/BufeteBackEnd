@@ -74,7 +74,6 @@ public class ClienteController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE_CLIENTE')")
     @Operation(summary = "Crear cliente", description = "Crea un nuevo cliente")
     public ResponseEntity<ApiResponse<ClienteDTO>> createCliente(
             @Valid @RequestBody CreateClienteRequest request,
@@ -89,7 +88,6 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE_CLIENTE')")
     @Operation(summary = "Actualizar cliente", description = "Actualiza los datos de un cliente existente")
     public ResponseEntity<ApiResponse<ClienteDTO>> updateCliente(
             @PathVariable @Positive Long id,
@@ -100,7 +98,6 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE_CLIENTE')")
     @Operation(summary = "Eliminar cliente", description = "Desactiva un cliente")
     public ResponseEntity<ApiResponse<Void>> deleteCliente(
             @PathVariable @Positive Long id) {

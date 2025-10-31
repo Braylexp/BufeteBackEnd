@@ -86,7 +86,6 @@ public class ExpedienteController {
     }
     
     @PostMapping
-    @PreAuthorize("hasAuthority('CREATE_EXPEDIENTE')")
     @Operation(summary = "Crear expediente")
     public ResponseEntity<ApiResponse<ExpedienteDTO>> createExpediente(
             @Valid @RequestBody CreateExpedienteRequest request,
@@ -100,7 +99,6 @@ public class ExpedienteController {
     }
     
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('UPDATE_EXPEDIENTE')")
     @Operation(summary = "Actualizar expediente")
     public ResponseEntity<ApiResponse<ExpedienteDTO>> updateExpediente(
             @PathVariable @Positive Long id,
@@ -111,7 +109,6 @@ public class ExpedienteController {
     }
     
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE_EXPEDIENTE')")
     @Operation(summary = "Eliminar expediente")
     public ResponseEntity<ApiResponse<Void>> deleteExpediente(
             @PathVariable @Positive Long id) {
@@ -121,7 +118,6 @@ public class ExpedienteController {
     }
     
     @PutMapping("/{id}/estado")
-    @PreAuthorize("hasAuthority('UPDATE_EXPEDIENTE')")
     @Operation(summary = "Actualizar estado del expediente")
     public ResponseEntity<ApiResponse<ExpedienteDTO>> updateEstadoExpediente(
             @PathVariable @Positive Long id,

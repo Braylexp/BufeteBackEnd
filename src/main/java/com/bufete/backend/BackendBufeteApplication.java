@@ -15,9 +15,6 @@ public class BackendBufeteApplication {
 
 		System.out.println();
 		System.out.println("...........");
-
-		System.out.println("admin password: " + passwordEncoder.encode("admin123"));
-		//         new BackendBufeteApplication().passwordEncoder.encode("admin123"));
 		System.out.println("Server Running");
 		System.out.println("...........");
 		System.out.println();

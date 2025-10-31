@@ -70,7 +70,6 @@ public class NodeController {
     }
     
     @PostMapping("/folders")
-    @PreAuthorize("hasAuthority('UPLOAD_FILE')")
     @Operation(summary = "Crear carpeta")
     public ResponseEntity<ApiResponse<NodeDTO>> createFolder(
             @Valid @RequestBody CreateFolderRequest request,
@@ -85,7 +84,6 @@ public class NodeController {
     }
 
     @PostMapping("/uploadPlantilla")
-    @PreAuthorize("hasAuthority('UPLOAD_FILE')")
     @Operation(summary = "Subir archivo")
     public ResponseEntity<ApiResponse<FileUploadResponse>> uploadPlantilla(
             @RequestParam("file") MultipartFile file,
@@ -96,10 +94,6 @@ public class NodeController {
             Authentication authentication) {
         
         Long uploadedById = getUserIdFromAuthentication(authentication);
-
-        if (file != null) {
-            System.out.println(" file: "+file.getOriginalFilename());
-        }
 
         Long nuevaCat = Long.valueOf(categoriaId);
 
@@ -117,7 +111,6 @@ public class NodeController {
     }
 
     @PostMapping("/uploadSentencia")
-    @PreAuthorize("hasAuthority('UPLOAD_FILE')")
     @Operation(summary = "Subir archivo")
     public ResponseEntity<ApiResponse<FileUploadResponse>> uploadSentencia(
             @RequestParam("file") MultipartFile file,
@@ -130,10 +123,6 @@ public class NodeController {
             Authentication authentication) {
         
         Long uploadedById = getUserIdFromAuthentication(authentication);
-
-        if (file != null) {
-            System.out.println(" file: "+file.getOriginalFilename());
-        }
 
         Long procID = Long.valueOf(procesoId);
         if(expedienteId != null){
@@ -157,7 +146,6 @@ public class NodeController {
     }
     
     @PostMapping("/uploadFile")
-    @PreAuthorize("hasAuthority('UPLOAD_FILE')")
     @Operation(summary = "Subir archivo")
     public ResponseEntity<ApiResponse<FileUploadResponse>> uploadFileToExpediente(
             @RequestParam("file") MultipartFile file,
@@ -182,7 +170,6 @@ public class NodeController {
     }
     
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('DELETE_FILE')")
     @Operation(summary = "Eliminar nodo")
     public ResponseEntity<ApiResponse<Void>> deleteNode(
             @PathVariable UUID id) {
@@ -192,7 +179,6 @@ public class NodeController {
     }
 
     @GetMapping("/{id}/downloadFileExpediente")
-    @PreAuthorize("hasAuthority('DOWNLOAD_FILE')")
     @Operation(summary = "Obtener URL de descarga")
     public ResponseEntity<ApiResponse<DownloadUrlDTO>> getDownloadUrlInExpediente(
             @PathVariable UUID id) {
@@ -202,7 +188,6 @@ public class NodeController {
     }
 
     @GetMapping("/{id}/downloadDoc")
-    @PreAuthorize("hasAuthority('DOWNLOAD_FILE')")
     @Operation(summary = "Obtener URL de descarga")
     public ResponseEntity<ApiResponse<DownloadUrlDTO>> getDownloadUrlDoc(
             @PathVariable UUID id) {

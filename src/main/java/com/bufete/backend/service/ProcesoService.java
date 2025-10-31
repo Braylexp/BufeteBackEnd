@@ -108,7 +108,6 @@ public class ProcesoService {
         
         Cliente clienteaux = new Cliente();
         if(!clienteRepository.existsByIdentificacion(request.getClienteId())){
-            System.out.println("cliente NO encontrado: ");
             
             clienteaux.setIdentificacion(request.getClienteId());
             clienteaux.setTipoCliente(Cliente.TipoCliente.NATURAL);

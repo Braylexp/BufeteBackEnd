@@ -78,7 +78,6 @@ public class ProcesoController {
     }
     
     @PostMapping
-    @PreAuthorize("hasAuthority('MANAGE_PROCESOS')")
     @Operation(summary = "Crear proceso", description = "Crea un nuevo proceso legal")
     public ResponseEntity<ApiResponse<ProcesoDTO>> createProceso(
             @Valid @RequestBody CreateProcesoRequest request,
@@ -92,7 +91,6 @@ public class ProcesoController {
     }
     
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('MANAGE_PROCESOS')")
     @Operation(summary = "Actualizar proceso", description = "Actualiza los datos de un proceso existente")
     public ResponseEntity<ApiResponse<ProcesoDTO>> updateProceso(
             @PathVariable @Positive Long id,
@@ -103,7 +101,6 @@ public class ProcesoController {
     }
     
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('MANAGE_PROCESOS')")
     @Operation(summary = "Eliminar proceso", description = "Desactiva un proceso")
     public ResponseEntity<ApiResponse<Void>> deleteProceso(
             @PathVariable @Positive Long id) {
@@ -113,7 +110,6 @@ public class ProcesoController {
     }
     
     @PutMapping("/{id}/estado")
-    @PreAuthorize("hasAuthority('MANAGE_PROCESOS')")
     @Operation(summary = "Actualizar estado del proceso", description = "Cambia el estado de un proceso")
     public ResponseEntity<ApiResponse<ProcesoDTO>> updateEstadoProceso(
             @PathVariable @Positive Long id,
