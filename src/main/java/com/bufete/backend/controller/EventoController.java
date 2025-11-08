@@ -71,8 +71,6 @@ public class EventoController {
             @Valid @RequestBody CreateEventoRequest request,
             Authentication authentication) {
 
-                System.out.println("evento"+request.getProcesoId());
-
         Long createdById = getUserIdFromAuthentication(authentication);
 
         EventoDTO evento = eventoService.createEvento(request, createdById);

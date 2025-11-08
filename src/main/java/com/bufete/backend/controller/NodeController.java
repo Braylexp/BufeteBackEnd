@@ -187,6 +187,24 @@ public class NodeController {
         return ResponseEntity.ok(ApiResponse.success(downloadUrl, "URL de descarga generada"));
     }
 
+    @GetMapping("/{id}/viewDoc")
+    @Operation(summary = "Obtener URL de visualizacion")
+    public ResponseEntity<ApiResponse<DownloadUrlDTO>> getViewUrlDoc(
+            @PathVariable UUID id) {
+        
+        DownloadUrlDTO downloadUrl = nodeService.getViewFileBlob(id, Duration.ofHours(1));
+        return ResponseEntity.ok(ApiResponse.success(downloadUrl, "URL de descarga generada"));
+    }
+
+    @GetMapping("/{id}/viewFileExpediente")
+    @Operation(summary = "Obtener URL de visualizacion")
+    public ResponseEntity<ApiResponse<DownloadUrlDTO>> getViewUrlInExpediente(
+            @PathVariable UUID id) {
+        
+        DownloadUrlDTO downloadUrl = nodeService.getViewUrl(id, Duration.ofHours(1));
+        return ResponseEntity.ok(ApiResponse.success(downloadUrl, "URL de descarga generada"));
+    }
+
     @GetMapping("/{id}/downloadDoc")
     @Operation(summary = "Obtener URL de descarga")
     public ResponseEntity<ApiResponse<DownloadUrlDTO>> getDownloadUrlDoc(

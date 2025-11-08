@@ -477,6 +477,36 @@ public class NodeService {
     }
 
     @Transactional(readOnly = true)
+    public DownloadUrlDTO getViewUrl(UUID id, Duration duration) {
+        Node node = nodeRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nodo no encontrado"));
+        
+        if (node.getType() != Node.NodeType.FILE) {
+            throw new ValidationException("Solo se pueden descargar archivos");
+        }
+        
+        FileVersion currentVersion = node.getCurrentVersion();
+        if (currentVersion == null) {
+            throw new EntityNotFoundException("No hay versión actual del archivo");
+        }
+        
+        FileBlob blob = currentVersion.getBlob();
+        String url = s3Service.generatePresignedViewUrl(blob.getStorageKey(), duration, blob.getOriginalName(), blob.getMimeType());
+        
+        // Actualizar último acceso
+        node.setLastAccessed(Instant.now());
+        nodeRepository.save(node);
+        
+        return DownloadUrlDTO.builder()
+                .url(url)
+                .fileName(blob.getOriginalName())
+                .mimeType(blob.getMimeType())
+                .sizeBytes(blob.getSizeBytes())
+                .expiresInSeconds((int) duration.getSeconds())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
     public DownloadUrlDTO getDownloadUrl(UUID id, Duration duration) {
         Node node = nodeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nodo no encontrado"));
@@ -497,6 +527,22 @@ public class NodeService {
         node.setLastAccessed(Instant.now());
         nodeRepository.save(node);
         
+        return DownloadUrlDTO.builder()
+                .url(url)
+                .fileName(blob.getOriginalName())
+                .mimeType(blob.getMimeType())
+                .sizeBytes(blob.getSizeBytes())
+                .expiresInSeconds((int) duration.getSeconds())
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public DownloadUrlDTO getViewFileBlob(UUID id, Duration duration) {
+        FileBlob blob = fileBlobRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Nodo no encontrado"));
+
+        String url = s3Service.generatePresignedViewUrl(blob.getStorageKey(), duration, blob.getOriginalName(), blob.getMimeType());
+                
         return DownloadUrlDTO.builder()
                 .url(url)
                 .fileName(blob.getOriginalName())

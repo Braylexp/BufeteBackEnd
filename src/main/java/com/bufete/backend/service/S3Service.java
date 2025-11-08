@@ -126,6 +126,39 @@ public class S3Service {
         }
     }
 
+    public String generatePresignedViewUrl(String storageKey, Duration duration, String fileName, String mimeType) {
+    try {
+        // Decide si mostrar inline o attachment según MIME
+        String disposition;
+        if (mimeType != null && (mimeType.startsWith("application/pdf") || mimeType.startsWith("image/"))) {
+            disposition = "inline"; // se abre en el navegador
+        } else {
+            disposition = "attachment"; // se descarga automáticamente
+        }
+
+        // Construir la solicitud de GetObject con Content-Disposition
+        GetObjectRequest getRequest = GetObjectRequest.builder()
+                .bucket(bucketName)
+                .key(storageKey)
+                .responseContentDisposition(disposition + "; filename=\"" + fileName + "\"")
+                .build();
+
+        // Crear presigned request
+        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(duration)
+                .getObjectRequest(getRequest)
+                .build();
+
+        PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
+
+        return presignedRequest.url().toString();
+
+    } catch (Exception e) {
+        log.error("Error generando URL presignada: {}", e.getMessage());
+        throw new RuntimeException("Error generando URL de descarga", e);
+    }
+}
+
     public String generatePresignedDownloadUrl(String storageKey, Duration duration, String name) {
         try {
             GetObjectRequest getRequest = GetObjectRequest.builder()
@@ -140,7 +173,7 @@ public class S3Service {
                     .build();
 
             PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
-           
+            
             return presignedRequest.url().toString();
             
         } catch (Exception e) {

@@ -51,7 +51,6 @@ public class UsuarioController {
     public ResponseEntity<ApiResponse<List<UsuarioDTO>>> getAllUsuarios(Authentication authentication) {
 
         List<UsuarioDTO> usuarios = usuarioService.allUsuarios();
-        System.out.println("Consultando usuarios");
         return ResponseEntity.ok(ApiResponse.success(usuarios, "Usuarios obtenidos exitosamente"));
     }
 
